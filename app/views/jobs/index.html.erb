@@ -1,0 +1,74 @@
+<% content_for :title, "Jobs" %>
+
+<div class="w-full">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+  <% end %>
+
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="font-bold text-4xl">Jobs</h1>
+    <div class="flex items-center gap-2">
+      <%= button_to "Fetch Remote Jobs", trigger_get_remote_jobs_path, method: :post, class: "rounded-md px-3.5 py-2.5 bg-gray-600 hover:bg-gray-500 text-white font-medium" %>
+      <%= button_to "Run LLM", trigger_run_llm_path, method: :post, class: "rounded-md px-3.5 py-2.5 bg-green-600 hover:bg-green-500 text-white font-medium" %>
+      <%= link_to "New job", new_job_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-medium" %>
+    </div>
+  </div>
+
+  <% if @jobs.any? %>
+    <table class="min-w-full divide-y divide-gray-200 text-sm">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-4 py-3 text-left font-semibold text-gray-600 w-16">#</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-600 w-24">Remote ID</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-600">Prompt</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-600">Model</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-600 w-32">Status</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-600">Server</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-600 w-20">Seconds</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-600 w-40">Created</th>
+          <th class="px-4 py-3 w-16"></th>
+          <th class="px-4 py-3 w-16"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        <% @jobs.each do |job| %>
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3 text-gray-400"><%= job.id %></td>
+            <td class="px-4 py-3 text-gray-400"><%= job.remote_job_id %></td>
+            <td class="px-4 py-3 max-w-xs">
+              <span class="block truncate text-gray-800"><%= job.prompt %></span>
+              <% if job.error_text.present? %>
+                <span class="block truncate text-red-500 text-xs mt-0.5" title="<%= job.error_text %>"><%= job.error_text %></span>
+              <% end %>
+            </td>
+            <td class="px-4 py-3 text-gray-500 font-mono text-xs"><%= job.model %></td>
+            <td class="px-4 py-3">
+              <%= form_with model: job, method: :patch do |f| %>
+                <%= f.select :status, Job.statuses.keys.map { |s| [s.humanize, s] }, { selected: job.status }, { onchange: "this.form.requestSubmit()", class: "rounded border border-gray-300 px-2 py-1 text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500" } %>
+              <% end %>
+            </td>
+            <td class="px-4 py-3 text-gray-500">
+              <% if job.server %>
+                <%= link_to job.server.url, job.server, class: "text-blue-600 hover:underline" %>
+              <% end %>
+            </td>
+            <td class="px-4 py-3 text-gray-500"><%= job.seconds %></td>
+            <td class="px-4 py-3 text-gray-500"><%= job.created_at.strftime("%b %d, %H:%M") %></td>
+            <td class="px-4 py-3 text-right">
+              <%= link_to "Show", job, class: "text-blue-600 hover:underline" %>
+            </td>
+            <td class="px-4 py-3 text-right">
+              <%= button_to "Delete", job, method: :delete, class: "text-red-500 hover:underline text-sm", form: { data: { turbo_confirm: "Delete this job?" } } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <div class="mt-6 flex justify-center">
+      <%== @pagy.series_nav %>
+    </div>
+  <% else %>
+    <p class="text-center my-10 text-gray-500">No jobs found.</p>
+  <% end %>
+</div>

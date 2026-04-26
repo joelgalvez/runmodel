@@ -1,0 +1,18 @@
+<div id="<%= dom_id job %>" class="w-full sm:w-auto my-5 space-y-5">
+  <div>
+    <strong class="block font-medium mb-1">Prompt:</strong>
+    <pre class="whitespace-pre-wrap break-words bg-gray-50 p-3 rounded-md overflow-auto"><%= job.prompt %></pre>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Server:</strong>
+    <% if job.server %>
+      <%= link_to job.server.url, job.server, class: "text-blue-600 hover:underline" %>
+    <% else %>
+      <span class="text-gray-400">None</span>
+    <% end %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Result:</strong>
+    <pre class="whitespace-pre-wrap break-words bg-gray-50 p-3 rounded-md overflow-auto"><%= job.result %></pre>
+  </div>
+</div>

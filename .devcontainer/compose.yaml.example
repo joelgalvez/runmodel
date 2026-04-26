@@ -1,0 +1,30 @@
+name: "runmodel"
+
+services:
+  rails-app:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+
+    environment:
+      - KAMAL_REGISTRY_PASSWORD
+
+    volumes:
+      - ../../runmodel:/workspaces/runmodel:cached
+      # Optional: mount a local models directory
+      # - /path/to/your/models:/models:ro
+      # Optional: mount your Claude config
+      # - /path/to/your/.claude:/home/vscode/.claude:cached
+    command: sleep infinity
+
+    # Uncomment the next line to use a non-root user for all processes.
+    # user: vscode
+
+    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
+    # (Adding the "ports" property to this file will not forward from a Codespace.)
+    depends_on:
+      - selenium
+
+  selenium:
+    image: selenium/standalone-chromium
+    restart: unless-stopped
