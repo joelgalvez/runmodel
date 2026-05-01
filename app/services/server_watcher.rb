@@ -3,6 +3,7 @@ require "json"
 
 class ServerWatcher
   RECONNECT_DELAY = 5
+  PING_TIMEOUT = 15
 
   def self.start_all
     Server.find_each { |server| start(server) }
@@ -37,6 +38,7 @@ class ServerWatcher
     mutex = Mutex.new
     cond = ConditionVariable.new
     closed = false
+    last_ping_at = Time.current
 
     ws = WebSocket::Client::Simple.connect(cable_url, headers: { "Origin" => origin })
 
@@ -58,7 +60,7 @@ class ServerWatcher
           Rails.logger.info "ServerWatcher: subscribed to LlmJobChannel on server #{server.id}"
           GetRemoteJobsJob.perform_later
         when "ping"
-          # ignore
+          mutex.synchronize { last_ping_at = Time.current; cond.signal }
         else
           if data["message"]&.fetch("new_jobs", false)
             Rails.logger.info "ServerWatcher: new jobs signal from server #{server.id}"
@@ -80,7 +82,17 @@ class ServerWatcher
       mutex.synchronize { closed = true; cond.signal }
     end
 
-    mutex.synchronize { cond.wait(mutex) until closed }
+    mutex.synchronize do
+      until closed
+        cond.wait(mutex, PING_TIMEOUT)
+        break if closed
+        if Time.current - last_ping_at > PING_TIMEOUT
+          Rails.logger.warn "ServerWatcher: no ping received for #{PING_TIMEOUT}s on server #{server.id}, reconnecting"
+          break
+        end
+      end
+    end
+
     ws.close rescue nil
   end
 end
