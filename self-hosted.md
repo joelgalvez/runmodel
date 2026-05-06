@@ -20,6 +20,9 @@ git clone https://github.com/joelgalvez/runmodel
 cd runmodel
 
 
+*** PLEASE NOTE this app has no security, it is not meant to be public facing. ***
+
+
 ```bash
 # Create your .env file
 cp .env.example .env
