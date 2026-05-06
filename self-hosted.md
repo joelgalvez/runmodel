@@ -3,7 +3,8 @@
 
 ## First, run llama-server something like this:
 
-path-to/llama-server \
+```bash
+  path-to/llama-server \
       --models-dir /path-to/models \
       --host 0.0.0.0 \
       --port 8080 \
