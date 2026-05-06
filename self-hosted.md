@@ -13,7 +13,7 @@
       --temp 0 \
       --top-k 1 \
       --repeat-penalty 1.0
-
+```
 
 ## Then setup RUNMODEL
 git clone https://github.com/joelgalvez/runmodel
