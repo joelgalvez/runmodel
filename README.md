@@ -5,7 +5,7 @@ A Rails application that acts as a local LLM worker. It connects to one or more 
 
 ## Setup
 
-Self hosted setup [self-hosted.md]
+Self hosted setup [self-hosted.md](self-hosted.md)
 
 
 ## How it works
