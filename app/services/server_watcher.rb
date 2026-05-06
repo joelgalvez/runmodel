@@ -6,6 +6,7 @@ class ServerWatcher
   PING_TIMEOUT = 15
 
   def self.start_all
+    return unless ActiveRecord::Base.connection.table_exists?(:servers)
     Server.find_each { |server| start(server) }
   end
 
