@@ -1,5 +1,5 @@
-##login to your local LLM server
-ssh root@<your-server-ip>
+## Login to your local LLM server
+`ssh root@<your-server-ip>`
 
 ## First, run llama-server something like this:
 
