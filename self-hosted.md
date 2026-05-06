@@ -23,9 +23,11 @@ cd runmodel
 ```bash
 # Create your .env file
 cp .env.example .env
+```
 
 Edit .env file
 
+```bash
 # Start the app
 docker compose up -d
 ```
