@@ -25,7 +25,7 @@ cd runmodel
 cp .env.example .env
 ```
 
-Edit .env file
+Edit .env file using some editor
 
 ```bash
 # Start the app
@@ -49,12 +49,15 @@ docker compose up -d --build
 
 ## Setup server
 
-go into `http://localhost/servers` and add your website/server. The URL should end with /api, such as 
+Go into `http://localhost/servers` and add your website/server. The URL should end with /api, such as 
 `https://your-newsletter-hub.com/api`
 
-email and password needs to match what you set up 
+E-mail and password needs to match what you set up earlier
 
 
+## Sync models
+
+Go to `http://localhost/available_models` and press Sync models. All available models from llama-server should be listed, and also be synced to the remote web server. This happens automatically in the future.
 
 
 ## Persistent Storage
