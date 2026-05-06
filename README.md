@@ -2,6 +2,12 @@
 
 A Rails application that acts as a local LLM worker. It connects to one or more remote Rails apps, claims pending LLM jobs, runs them against a local [llama.cpp](https://github.com/ggerganov/llama.cpp) server, and pushes the results back.
 
+
+## Setup
+
+Self hosted setup [self-hosted.md]
+
+
 ## How it works
 
 1. **Watches** remote servers via WebSocket — when new jobs are signaled, it fetches them immediately
