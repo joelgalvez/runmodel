@@ -20,8 +20,11 @@ This is the comand I use:
 ```
 
 ## Then setup RUNMODEL
+
+```bash
 git clone https://github.com/joelgalvez/runmodel
 cd runmodel
+```
 
 
 *** PLEASE NOTE this app has no security, it is not meant to be public facing. ***
@@ -65,6 +68,10 @@ E-mail and password needs to match what you set up earlier
 ## Sync models
 
 Go to `http://localhost/available_models` and press Sync models. All available models from llama-server should be listed, and also be synced to the remote web server. This happens automatically in the future.
+
+## Select model! (important)
+
+Go back to the web server menu -> settings, then select a model from the list of models you have available locally. Without this step the newsletter parsing won't work, it won't pick any model by default.
 
 
 ## Persistent Storage
