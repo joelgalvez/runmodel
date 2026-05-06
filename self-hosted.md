@@ -1,7 +1,11 @@
 ## Login to your local LLM server
 `ssh root@<your-server-ip>`
 
-## First, run llama-server something like this:
+## Run llama-server
+
+If you want it to run all the time you could setup a systemd service to run this in the background.
+
+This is the comand I use:
 
 ```bash
   path-to/llama-server \
